@@ -1,0 +1,59 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go build artifacts
+bin/
+build/
+dist/
+coverage.out
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependency files (if vendored)
+vendor/
+
+# OS-generated
+.DS_Store
+Thumbs.db
+
+# Logs or temporary
+*.log
+*.tmp
+*.bak
+*.env
+.env.*
+tmp/
+
+# Go workspace files
+go.work
+go.work.sum
+
+# Test cache and coverage
+.testCoverage/
+coverage.html
+coverage.txt
+
+# Redpanda and Kafka related
+*.offset
+data/
+__consumer_offsets/
+
+# Development environment specifics
+.air.toml
+.vscode/settings.json
+debug
+
+# Custom build outputs that might not be covered by the bin/ pattern
+*-darwin
+*-linux
+*-windows
