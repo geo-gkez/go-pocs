@@ -1,11 +1,14 @@
 package config
 
 import (
+	"context"
 	"fmt"
 	"os"
+	"time"
 
 	config_models "github.com/geo-gkez/go-pocs/redpanda-poc/internal/config/models"
 	"github.com/spf13/viper"
+	"github.com/twmb/franz-go/pkg/kadm"
 	"github.com/twmb/franz-go/pkg/kgo"
 )
 
@@ -54,15 +57,26 @@ func loadConfig() (*config_models.AppConfiguration, error) {
 }
 
 func setUpKafka(appConfig *config_models.AppConfiguration) *kgo.Client {
+	defaultTopic := appConfig.Kafka.Topics.DefaultProducer
+
 	client, err := kgo.NewClient(
 		kgo.SeedBrokers(appConfig.Kafka.Connection.Brokers...),
-		kgo.DefaultProduceTopic(appConfig.Kafka.Topics.DefaultProducer),
+		kgo.DefaultProduceTopic(defaultTopic),
 		kgo.ConsumerGroup(appConfig.Kafka.Topics.DefaultConsumerGroup),
 		kgo.ConsumeTopics(appConfig.Kafka.Topics.DefaultConsumer),
 	)
 
 	if err != nil {
 		panic(fmt.Sprintf("failed to create Kafka client: %v", err))
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err = kadm.NewClient(client).CreateTopic(ctx, 1, -1, nil, defaultTopic)
+
+	if err != nil {
+		panic(fmt.Sprintf("failed to create topic %s: %v", defaultTopic, err))
 	}
 
 	return client

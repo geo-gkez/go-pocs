@@ -1,7 +1,7 @@
 kafka:
   connection:
     brokers: 
-      - localhost:9092
+      - localhost:19092
   topics:
     default-producer: test.output
     default-consumer: test.input
