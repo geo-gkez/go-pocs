@@ -1,0 +1,8 @@
+kafka:
+  connection:
+    brokers: 
+      - localhost:9092
+  topics:
+    default-producer: test.output
+    default-consumer: test.input
+    default-consumer-group: test.group
