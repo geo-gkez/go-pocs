@@ -7,8 +7,9 @@ type AppConfiguration struct {
 
 // KafkaProperties holds all Kafka-related configuration
 type KafkaProperties struct {
-	Connection KafkaConnection
-	Topics     KafkaTopics
+	Connection          KafkaConnection
+	Topics              KafkaTopics
+	ServerConfiguration ServerConfiguration
 }
 
 // KafkaConnection holds Kafka connection details
@@ -21,4 +22,10 @@ type KafkaTopics struct {
 	DefaultProducer      string `mapstructure:"default-producer"`
 	DefaultConsumer      string `mapstructure:"default-consumer" `
 	DefaultConsumerGroup string `mapstructure:"default-consumer-group"`
+}
+
+type ServerConfiguration struct {
+	Port     int
+	Mode     string
+	LogLevel string
 }

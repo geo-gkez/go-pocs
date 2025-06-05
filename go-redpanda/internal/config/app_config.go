@@ -4,9 +4,13 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	config_models "github.com/geo-gkez/go-pocs/redpanda-poc/internal/config/models"
+	"github.com/geo-gkez/go-pocs/redpanda-poc/internal/routes"
+	"github.com/geo-gkez/go-pocs/redpanda-poc/internal/service"
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"github.com/twmb/franz-go/pkg/kadm"
 	"github.com/twmb/franz-go/pkg/kgo"
@@ -16,7 +20,7 @@ type Settings struct {
 	KafkaClient *kgo.Client
 }
 
-func SetupApp() *Settings {
+func SetupApp() {
 	config, err := loadConfig()
 	if err != nil {
 		panic(fmt.Sprintf("failed to load config: %v", err))
@@ -24,9 +28,13 @@ func SetupApp() *Settings {
 
 	kafkaClient := setUpKafka(config)
 
-	return &Settings{
-		KafkaClient: kafkaClient,
-	}
+	kafkaService := service.NewKafkaService(kafkaClient)
+
+	router := gin.Default()
+
+	router = routes.SetupRoutesAndRegister(router, kafkaService)
+
+	router.Run(":8085")
 }
 
 func loadConfig() (*config_models.AppConfiguration, error) {
@@ -75,7 +83,7 @@ func setUpKafka(appConfig *config_models.AppConfiguration) *kgo.Client {
 
 	_, err = kadm.NewClient(client).CreateTopic(ctx, 1, -1, nil, defaultTopic)
 
-	if err != nil {
+	if err != nil && !strings.Contains(err.Error(), "TOPIC_ALREADY_EXISTS") {
 		panic(fmt.Sprintf("failed to create topic %s: %v", defaultTopic, err))
 	}
 
