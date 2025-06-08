@@ -1,7 +1,0 @@
-POST http://localhost:8085/produce
-Content-Type: application/json
-
-{
- "key":"produce-3",
- "message":"foo-bar3"   
-}
