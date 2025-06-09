@@ -19,15 +19,19 @@ A proof of concept application demonstrating integration between Go and Redpanda
 
 ### Tests POC
 
-A collection of example projects exploring Test-Driven Development (TDD) patterns in Go, following the "Learn Go with Tests" tutorial.
+A collection of example projects exploring Test-Driven Development (TDD) patterns in Go, closely following the "Learn Go with Tests" tutorial, including concurrency patterns and best practices.
 
 - **Technologies**: Go, Go testing package
 - **Directory**: [tests-poc](./tests-poc)
 - **Features**:
-  - TDD examples for various Go concepts
-  - Banking wallet implementation with TDD
-  - Shapes area calculations demonstrating interfaces
-  - Reference document of Go tools and tips
+  - Comprehensive TDD examples covering:
+    - Concurrency patterns with goroutines and channels
+    - Dependency injection techniques
+    - Dictionary implementation with maps
+    - Mocking for effective testing
+    - Banking wallet implementation
+    - Shapes and interfaces
+  - Reference document of Go tools and tips, including a dedicated section on Go concurrency (goroutines, channels, race conditions, and common pitfalls)
 
 ## Getting Started
 
@@ -52,10 +56,14 @@ go-pocs/
 │   ├── deployments/           # Deployment configurations
 │   └── internal/              # Internal application code
 └── tests-poc/                 # TDD examples and patterns
-    ├── go-tools-and-tips.md   # Reference document for Go tools
+    ├── go-tools-and-tips.md   # Reference document for Go tools and concurrency
     └── tdd/                   # Test-Driven Development examples
-        ├── banking/           # Banking wallet implementation
-        └── shapes/            # Shapes and area calculations
+        ├── banking/           # Banking wallet implementation with TDD
+        ├── concurrency/       # Concurrency patterns with goroutines and channels
+        ├── dependency_injection/ # Dependency injection patterns
+        ├── dictionary/        # Dictionary implementation showing map usage
+        ├── mocking/           # Mocking examples for testing
+        └── shapes/            # Interfaces demonstrated with shapes
 ```
 
 ## Development Approach
@@ -69,8 +77,8 @@ These projects follow several key principles:
 
 ## Learning Resources
 
-- [Go Tools and Tips](./tests-poc/go-tools-and-tips.md) - A compilation of useful Go tools and development tips
-- [Learn Go with Tests](https://quii.gitbook.io/learn-go-with-tests/) - Source tutorial for the tests-poc examples
+- [Go Tools and Tips](./tests-poc/go-tools-and-tips.md) - A compilation of useful Go tools, concurrency patterns, and development tips inspired by "Learn Go with Tests"
+- [Learn Go with Tests](https://quii.gitbook.io/learn-go-with-tests/) - Source tutorial for the tests-poc examples, including concurrency fundamentals
 
 ## Future Projects
 
@@ -78,8 +86,5 @@ Planned proof of concept projects include:
 
 - gRPC service implementation
 - GraphQL API with Go
-- Concurrent programming patterns
-
-## License
-
-This repository is licensed under the MIT License - see individual project directories for specific licensing information.
+- Advanced state management patterns
+- Performance optimization techniques

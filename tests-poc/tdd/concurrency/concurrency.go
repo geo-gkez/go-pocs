@@ -1,3 +1,7 @@
+// This example demonstrates concurrency patterns in Go using goroutines and channels.
+// It's based on the "Learn Go with Tests" tutorial.
+// For more information on Go concurrency patterns and best practices, see:
+// /home/geo-gkez/Documents/go-projects/go-pocs/tests-poc/go-tools-and-tips.md#concurrency-in-go
 package concurrency
 
 // WebsiteChecker defines a function type that takes a URL string and returns a boolean indicating if the website is up.
