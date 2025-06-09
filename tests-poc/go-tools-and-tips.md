@@ -14,6 +14,7 @@ This document is a compilation of useful Go tools, tips, and best practices deri
 - [Go Commands](#go-commands)
 - [TDD Tips](#tdd-tips)
 - [Useful Go Concepts](#useful-go-concepts)
+- [Concurrency in Go](#concurrency-in-go)
 
 ## Testing Tools
 
@@ -442,3 +443,108 @@ func (d Dictionary) Search(word string) (string, error) {
     return definition, nil
 }
 ```
+
+## Concurrency in Go
+
+Go provides powerful concurrency primitives: goroutines and channels. Here are some tips and best practices for writing safe and efficient concurrent code.
+
+### Goroutines
+
+A goroutine is a lightweight thread managed by the Go runtime. You start a goroutine by prefixing a function call with the `go` keyword:
+
+```go
+go func() {
+    // concurrent code here
+}()
+```
+
+### Channels
+
+Channels are used to communicate between goroutines and synchronize execution.
+
+```go
+ch := make(chan int)
+
+// Send to channel
+ch <- 42
+
+// Receive from channel
+value := <-ch
+```
+
+### Common Concurrency Pitfalls
+
+#### 1. Loop Variable Capture in Goroutines
+
+When launching goroutines inside a loop, always pass the loop variable as an argument to the goroutine function to avoid unexpected behavior:
+
+```go
+for _, url := range urls {
+    go func(url string) {
+        // use url safely here
+    }(url)
+}
+```
+
+If you use the loop variable directly, all goroutines may capture the same (last) value.
+
+#### 2. Race Conditions with Shared Data
+
+Maps are not safe for concurrent writes. If multiple goroutines write to a map, use a `sync.Mutex` or a channel to synchronize access.
+
+```go
+var mu sync.Mutex
+results := make(map[string]bool)
+
+for _, url := range urls {
+    go func(url string) {
+        mu.Lock()
+        results[url] = check(url)
+        mu.Unlock()
+    }(url)
+}
+```
+
+#### 3. Deadlocks
+
+Always ensure that every send on a channel has a corresponding receive, and vice versa. Buffered channels or closing channels can help avoid deadlocks in some cases.
+
+### Example: Concurrent Website Checker
+
+```go
+type result struct {
+    url   string
+    value bool
+}
+
+func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
+    results := make(map[string]bool)
+    resultChannel := make(chan result)
+
+    for _, url := range urls {
+        go func(url string) {
+            resultChannel <- result{url, wc(url)}
+        }(url)
+    }
+
+    for i := 0; i < len(urls); i++ {
+        r := <-resultChannel
+        results[r.url] = r.value
+    }
+
+    return results
+}
+```
+
+### Tools for Concurrency
+
+- `go test -race`: Detects race conditions in your code.
+- `sync.WaitGroup`: Waits for a collection of goroutines to finish.
+- `sync.Mutex`: Provides mutual exclusion for shared data.
+
+### Further Reading
+
+- [Go by Example: Goroutines](https://gobyexample.com/goroutines)
+- [Go by Example: Channels](https://gobyexample.com/channels)
+- [Go Blog: Concurrency is not parallelism](https://blog.golang.org/concurrency-is-not-parallelism)
+- [Go Blog: Share Memory by Communicating](https://blog.golang.org/share-memory-by-communicating)
