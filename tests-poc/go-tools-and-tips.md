@@ -2,6 +2,11 @@
 
 This document is a compilation of useful Go tools, tips, and best practices derived from the examples in the "Learn Go with Tests" tutorial.
 
+## Resources
+
+- [Learn Go with Tests](https://quii.gitbook.io/learn-go-with-tests/) - A great resource for learning Go through test-driven development
+- [Learn Go with Tests GitHub Repository](https://github.com/quii/learn-go-with-tests) - Source code for all examples
+
 ## Table of Contents
 - [Testing Tools](#testing-tools)
 - [Code Quality Tools](#code-quality-tools)
