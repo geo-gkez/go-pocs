@@ -349,3 +349,96 @@ func ExampleAdd() {
 ```
 
 These examples serve as both documentation and tests.
+
+### Maps
+
+Maps in Go are powerful built-in data structures that associate keys with values. Here are some important concepts and best practices:
+
+#### Maps as Reference Types
+
+Maps in Go are reference types (similar to slices), which means:
+
+- When you pass a map to a function, you're passing a reference to the map
+- Changes to the map inside a function are visible outside the function
+- You don't need to use pointers to maps to modify them in functions or methods
+
+```go
+// This works fine without a pointer receiver
+func (d Dictionary) Add(word, definition string) {
+    d[word] = definition  // Modifies the map directly
+}
+```
+
+#### Map Operations
+
+```go
+// Creating a map
+m := make(map[string]string)
+// Or with initial values
+m := map[string]string{
+    "key1": "value1",
+    "key2": "value2",
+}
+
+// Adding or updating a key
+m["key"] = "value"
+
+// Retrieving a value
+value := m["key"]
+
+// Checking if a key exists (comma ok idiom)
+value, ok := m["key"]
+if ok {
+    // Key exists, use value
+}
+
+// Deleting a key
+delete(m, "key")
+
+// Getting the number of items
+length := len(m)
+```
+
+#### Common Map Pitfalls
+
+1. **Accessing a nil map**: Attempting to write to a nil map will cause a panic
+   ```go
+   var m map[string]string  // nil map
+   m["key"] = "value"       // panic: assignment to entry in nil map
+   ```
+   Always initialize a map before use: `m := make(map[string]string)`
+
+2. **Using pointer receivers with maps unnecessarily**:
+   ```go
+   // Unnecessarily complex - maps are already references
+   func (d *Dictionary) Add(word, definition string) {
+       (*d)[word] = definition  // Need to dereference to access the map
+   }
+   ```
+
+3. **Not checking if a key exists before accessing**:
+   ```go
+   // Safe way to access a map
+   value, exists := myMap[key]
+   if exists {
+       // Use value
+   }
+   ```
+
+4. **Concurrent map access**: Maps are not safe for concurrent use. Use sync.Mutex or sync.RWMutex for concurrent access.
+
+#### Custom Map Types
+
+You can create custom types based on maps to add methods, as shown in the dictionary example:
+
+```go
+type Dictionary map[string]string
+
+func (d Dictionary) Search(word string) (string, error) {
+    definition, ok := d[word]
+    if !ok {
+        return "", errors.New("word not found")
+    }
+    return definition, nil
+}
+```
