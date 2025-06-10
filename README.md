@@ -8,12 +8,13 @@ The repository is organized into the following projects:
 
 ### Redpanda POC
 
-A proof of concept application demonstrating integration between Go and Redpanda (a Kafka API-compatible streaming platform). The project provides a simple REST API for producing messages to Redpanda topics.
+A proof of concept application demonstrating integration between Go and Redpanda (a Kafka API-compatible streaming platform). The project provides a simple REST API for producing messages to Redpanda topics and includes a Kafka consumer implementation.
 
-- **Technologies**: Go, Gin, franz-go Kafka client, Redpanda, Docker
+- **Technologies**: Go (v1.24), Gin (v1.10.1), franz-go Kafka client (v1.19.5), Redpanda (v25.1.4), Docker, Viper (v1.20.1)
 - **Directory**: [redpanda-poc](./redpanda-poc)
 - **Features**:
   - REST API for producing messages to Redpanda
+  - Kafka consumer implementation for processing messages
   - Docker Compose setup for Redpanda infrastructure
   - Clean architecture with separation of concerns
 
@@ -39,7 +40,7 @@ Each project contains its own README with specific instructions for setting up a
 
 ### Prerequisites
 
-- Go 1.18 or later
+- Go 1.24 or later
 - Docker and Docker Compose (for some projects)
 - Make (optional, for using provided Makefiles)
 
@@ -50,13 +51,37 @@ go-pocs/
 ├── README.md                  # Main repository documentation
 ├── redpanda-poc/              # Redpanda integration POC
 │   ├── api/                   # API documentation
+│   │   └── go-redpanda.http   # HTTP request examples
 │   ├── build/                 # Build artifacts
+│   │   └── redpanda-poc       # Compiled binary
 │   ├── cmd/                   # Application entry points
+│   │   └── main.go            # Main application entry point
 │   ├── configs/               # Configuration files
+│   │   └── config.yml         # Application configuration
 │   ├── deployments/           # Deployment configurations
-│   └── internal/              # Internal application code
+│   │   └── docker-compose.yml # Docker Compose for Redpanda
+│   ├── internal/              # Internal application code
+│   │   ├── config/            # Configuration management
+│   │   │   ├── app_config.go  # App configuration
+│   │   │   ├── kafka_config.go # Kafka configuration 
+│   │   │   ├── logger/        # Logging configuration
+│   │   │   │   └── logger.go  # Logger implementation
+│   │   │   └── models/        # Configuration models
+│   │   │       └── config_models.go # Configuration data structures
+│   │   ├── model/             # Data models
+│   │   │   └── http_models.go # HTTP request/response models
+│   │   ├── routes/            # HTTP routes
+│   │   │   └── route.go       # Route definitions
+│   │   └── service/           # Business logic services
+│   │       ├── kafka_consumer.go # Kafka consumer implementation
+│   │       └── kafka_service.go  # Kafka service implementation
+│   ├── go.mod                 # Go module file
+│   ├── go.sum                 # Go module checksums
+│   ├── Makefile               # Build and utility commands
+│   └── README.md              # Project documentation
 └── tests-poc/                 # TDD examples and patterns
     ├── go-tools-and-tips.md   # Reference document for Go tools and concurrency
+    ├── go.mod                 # Go module file for tests
     └── tdd/                   # Test-Driven Development examples
         ├── banking/           # Banking wallet implementation with TDD
         ├── concurrency/       # Concurrency patterns with goroutines and channels

@@ -1,6 +1,6 @@
 # Redpanda POC
 
-A Proof of Concept application demonstrating how to use Redpanda (Kafka API-compatible streaming platform) with Go. This project provides a simple API for producing messages to Redpanda topics.
+A Proof of Concept application demonstrating how to use Redpanda (Kafka API-compatible streaming platform) with Go. This project provides a simple API for producing messages to Redpanda topics and includes a Kafka consumer implementation.
 
 ## Overview
 
@@ -9,6 +9,7 @@ This project demonstrates:
 - Setting up a Redpanda cluster using Docker Compose
 - Creating a Go service that interacts with Redpanda using the franz-go client
 - Exposing a REST API for producing messages to Redpanda topics
+- Implementing a Kafka consumer to process messages from topics
 - Using Gin as the web framework
 - Containerized development environment
 
@@ -112,6 +113,14 @@ curl -X POST http://localhost:8085/produce \
   -H "Content-Type: application/json" \
   -d '{"key":"test-key","message":"Hello Redpanda!"}'
 ```
+
+### Kafka Consumer
+
+The application includes a Kafka consumer implementation that automatically processes messages from the configured topics. The consumer runs in the background when the application starts and processes messages according to the configuration in `configs/config.yml`.
+
+Consumer configuration:
+- Topic: `test.input` (configurable)
+- Consumer Group: `test.group` (configurable)
 
 ## Makefile Commands
 
