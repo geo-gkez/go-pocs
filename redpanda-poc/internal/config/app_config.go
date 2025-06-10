@@ -1,18 +1,14 @@
 package config
 
 import (
-	"context"
 	"fmt"
 	"os"
-	"strings"
-	"time"
 
-	config_models "github.com/geo-gkez/go-pocs/redpanda-poc/internal/config/models"
+	"github.com/geo-gkez/go-pocs/redpanda-poc/internal/config/models"
 	"github.com/geo-gkez/go-pocs/redpanda-poc/internal/routes"
 	"github.com/geo-gkez/go-pocs/redpanda-poc/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"github.com/twmb/franz-go/pkg/kadm"
 	"github.com/twmb/franz-go/pkg/kgo"
 )
 
@@ -26,7 +22,7 @@ func SetupApp() {
 		panic(fmt.Sprintf("failed to load config: %v", err))
 	}
 
-	kafkaClient := setUpKafka(config)
+	kafkaClient := setUpKafka(config, service.ProcessKafkaMessage)
 
 	kafkaService := service.NewKafkaService(kafkaClient)
 
@@ -62,30 +58,4 @@ func loadConfig() (*config_models.AppConfiguration, error) {
 	}
 
 	return &config, nil
-}
-
-func setUpKafka(appConfig *config_models.AppConfiguration) *kgo.Client {
-	defaultTopic := appConfig.Kafka.Topics.DefaultProducer
-
-	client, err := kgo.NewClient(
-		kgo.SeedBrokers(appConfig.Kafka.Connection.Brokers...),
-		kgo.DefaultProduceTopic(defaultTopic),
-		kgo.ConsumerGroup(appConfig.Kafka.Topics.DefaultConsumerGroup),
-		kgo.ConsumeTopics(appConfig.Kafka.Topics.DefaultConsumer),
-	)
-
-	if err != nil {
-		panic(fmt.Sprintf("failed to create Kafka client: %v", err))
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	_, err = kadm.NewClient(client).CreateTopic(ctx, 1, -1, nil, defaultTopic)
-
-	if err != nil && !strings.Contains(err.Error(), "TOPIC_ALREADY_EXISTS") {
-		panic(fmt.Sprintf("failed to create topic %s: %v", defaultTopic, err))
-	}
-
-	return client
 }
