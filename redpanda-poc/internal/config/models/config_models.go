@@ -2,14 +2,14 @@ package config_models
 
 // AppConfig represents the root configuration structure
 type AppConfiguration struct {
-	Kafka KafkaProperties
+	Kafka  KafkaProperties
+	Server ServerConfiguration
 }
 
 // KafkaProperties holds all Kafka-related configuration
 type KafkaProperties struct {
-	Connection          KafkaConnection
-	Topics              KafkaTopics
-	ServerConfiguration ServerConfiguration
+	Connection KafkaConnection
+	Topics     KafkaTopics
 }
 
 // KafkaConnection holds Kafka connection details

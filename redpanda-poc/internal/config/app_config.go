@@ -30,7 +30,8 @@ func SetupApp() {
 
 	router = routes.SetupRoutesAndRegister(router, kafkaService)
 
-	router.Run(":8085")
+	serverPort := config.Server.Port
+	router.Run(fmt.Sprintf(":%d", serverPort))
 }
 
 func loadConfig() (*config_models.AppConfiguration, error) {
