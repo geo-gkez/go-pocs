@@ -19,6 +19,7 @@ redpanda-poc/
 ├── api/                   # API documentation and examples
 │   └── go-redpanda.http   # HTTP request examples
 ├── build/                 # Build artifacts
+│   └── redpanda-poc       # Compiled binary
 ├── cmd/                   # Application entry points
 │   └── main.go            # Main application entry point
 ├── configs/               # Configuration files
@@ -27,9 +28,19 @@ redpanda-poc/
 │   └── docker-compose.yml # Docker Compose for Redpanda
 ├── internal/              # Private application code
 │   ├── config/            # Configuration management
+│   │   ├── app_config.go  # App configuration
+│   │   ├── kafka_config.go # Kafka configuration
+│   │   ├── logger/        # Logging configuration
+│   │   │   └── logger.go  # Logger implementation
+│   │   └── models/        # Configuration models
+│   │       └── config_models.go # Configuration data structures
 │   ├── model/             # Data models
+│   │   └── http_models.go # HTTP request/response models
 │   ├── routes/            # HTTP routes
+│   │   └── route.go       # Route definitions
 │   └── service/           # Business logic services
+│       ├── kafka_consumer.go # Kafka consumer implementation
+│       └── kafka_service.go  # Kafka service implementation
 ├── go.mod                 # Go module file
 ├── go.sum                 # Go module checksums
 ├── Makefile               # Build and utility commands
@@ -38,7 +49,7 @@ redpanda-poc/
 
 ## Prerequisites
 
-- Go 1.18 or later
+- Go 1.24 or later
 - Docker and Docker Compose
 - Make (optional, for using the provided Makefile)
 
@@ -53,7 +64,7 @@ make infra
 ```
 
 This will start:
-- A single-node Redpanda cluster
+- A single-node Redpanda cluster (v25.1.4)
 - Redpanda Console UI accessible at http://localhost:9080
 
 ### Building and Running the Application
@@ -70,7 +81,7 @@ Run the application:
 make run
 ```
 
-The API server will start on port 8085 (or as configured).
+The API server will start on port 8085 (as configured in configs/config.yml).
 
 ### Tearing Down the Infrastructure
 
@@ -119,13 +130,22 @@ The Redpanda Console provides a web UI for monitoring and managing your Redpanda
 
 http://localhost:9080
 
+### Default Kafka Topics
+
+The application is configured with the following default topics (as defined in configs/config.yml):
+
+- Producer Topic: `test.output`
+- Consumer Topic: `test.input`
+- Consumer Group: `test.group`
+
 ## Technologies Used
 
-- [Go](https://golang.org/) - Programming language
-- [Gin](https://github.com/gin-gonic/gin) - Web framework
-- [franz-go](https://github.com/twmb/franz-go) - Kafka client for Go
-- [Redpanda](https://redpanda.com/) - Kafka-compatible streaming platform
+- [Go](https://golang.org/) - Programming language (v1.24)
+- [Gin](https://github.com/gin-gonic/gin) - Web framework (v1.10.1)
+- [franz-go](https://github.com/twmb/franz-go) - Kafka client for Go (v1.19.5)
+- [Redpanda](https://redpanda.com/) - Kafka-compatible streaming platform (v25.1.4)
 - [Docker](https://www.docker.com/) - Containerization
+- [Viper](https://github.com/spf13/viper) - Configuration management (v1.20.1)
 
 ## License
 
