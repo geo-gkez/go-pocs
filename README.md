@@ -91,15 +91,6 @@ go-pocs/
         └── shapes/            # Interfaces demonstrated with shapes
 ```
 
-## Development Approach
-
-These projects follow several key principles:
-
-1. **Test-Driven Development**: Most code is written following the TDD approach, writing tests first before implementation.
-2. **Clean Architecture**: Projects use a clean architecture approach with clear separation of concerns.
-3. **Idiomatic Go**: Code attempts to follow Go best practices and idiomatic patterns.
-4. **Containerization**: Where applicable, projects include Docker configurations for easy environment setup.
-
 ## Learning Resources
 
 - [Go Tools and Tips](./tests-poc/go-tools-and-tips.md) - A compilation of useful Go tools, concurrency patterns, and development tips inspired by "Learn Go with Tests"
