@@ -18,6 +18,19 @@ A proof of concept application demonstrating integration between Go and Redpanda
   - Docker Compose setup for Redpanda infrastructure
   - Clean architecture with separation of concerns
 
+### gRPC POC
+
+A proof of concept project for implementing gRPC services in Go. This project demonstrates modern gRPC patterns, protocol buffer definitions, and client-server communication.
+
+- **Technologies**: Go, gRPC, Protocol Buffers
+- **Directory**: [grpc](./grpc)  
+- **Status**: In development
+- **Features** (planned):
+  - gRPC service definitions with Protocol Buffers
+  - Unary and streaming RPC implementations
+  - Client and server examples
+  - Authentication and middleware patterns
+
 ### Tests POC
 
 A collection of example projects exploring Test-Driven Development (TDD) patterns in Go, closely following the "Learn Go with Tests" tutorial, including concurrency patterns and best practices.
@@ -31,6 +44,7 @@ A collection of example projects exploring Test-Driven Development (TDD) pattern
     - Dictionary implementation with maps
     - Mocking for effective testing
     - Banking wallet implementation
+    - Number conversions (Roman to Arabic numerals)
     - Shapes and interfaces
   - Reference document of Go tools and tips, including a dedicated section on Go concurrency (goroutines, channels, race conditions, and common pitfalls)
 
@@ -49,6 +63,7 @@ Each project contains its own README with specific instructions for setting up a
 ```
 go-pocs/
 ├── README.md                  # Main repository documentation
+├── grpc/                      # gRPC service implementation POC (in development)
 ├── redpanda-poc/              # Redpanda integration POC
 │   ├── api/                   # API documentation
 │   │   └── go-redpanda.http   # HTTP request examples
@@ -88,6 +103,7 @@ go-pocs/
         ├── dependency_injection/ # Dependency injection patterns
         ├── dictionary/        # Dictionary implementation showing map usage
         ├── mocking/           # Mocking examples for testing
+        ├── number_convertions/ # Number conversion examples (Roman to Arabic)
         └── shapes/            # Interfaces demonstrated with shapes
 ```
 
@@ -100,7 +116,6 @@ go-pocs/
 
 Planned proof of concept projects include:
 
-- gRPC service implementation
 - GraphQL API with Go
 - Advanced state management patterns
 - Performance optimization techniques
